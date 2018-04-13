@@ -10,7 +10,8 @@
     "license": "MIT",
     "autoload": {
         "files": [
-            "src/registration.php"
+            "src/registration.php",
+            "src/cli_commands.php"
         ],
         "psr-4": {
             "Hypernode\\Deployment\\": "src/"
