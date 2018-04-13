@@ -1,0 +1,19 @@
+{
+    "name": "hypernode/deployment",
+    "description": "Deployment tools for Hypernode",
+    "require": {
+        "php": "^7.0",
+        "magento/magento-composer-installer": "*"
+    },
+    "type": "magento2-module",
+    "version": "0.1.0",
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Hypernode\\Deployment\\": ""
+        }
+    }
+}
