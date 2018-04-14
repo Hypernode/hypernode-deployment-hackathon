@@ -4,4 +4,4 @@
 - name: Copy project remotely
   synchronize:
     src: "{{playbook_dir}}/"
-    dest: /data/web/hackathon
+    dest: "{{ magento_project_folder }}"
