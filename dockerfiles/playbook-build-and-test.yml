@@ -41,8 +41,19 @@
       mysql_db:
         name: magento2
         state: present
-    - name: Test the instance
+    - name: Run setup:install
       delegate_to: magento2-build-instance
       shell: /magento2/bin/magento setup:install --db-host="127.0.0.1" --db-user="magento2" --db-password="magento2" --db-name="magento2" --admin-user="admin" --admin-password="Backend1234" --admin-email="admin@example.com" --admin-firstname="Firstname" --admin-lastname="Lastname"
-      register: docker_output
+      changed_when: false
+    - name: Run deploy:mode:set production
+      delegate_to: magento2-build-instance
+      shell: /magento2/bin/magento deploy:mode:set production --skip-compilation
+      changed_when: false
+    - name: Run setup:di:compile
+      delegate_to: magento2-build-instance
+      shell: /magento2/bin/magento setup:di:compile
+      changed_when: false
+    - name: Run setup:static-content:deploy
+      delegate_to: magento2-build-instance
+      shell: /magento2/bin/magento setup:static-content:deploy
       changed_when: false
