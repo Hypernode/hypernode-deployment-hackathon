@@ -14,9 +14,9 @@ class SetupDiCompile
     {
         try {
             $this->environment->log('Executing DI compile...');
-            /*$this->environment->log(
+            $this->environment->log(
                 $this->runCommand(new Console\Input\ArrayInput(['command' => 'setup:di:compile']))->fetch()
-            );*/
+            );
         } catch (\Error $e) {
             $this->environment->getLogger()->error($e->getMessage());
 
