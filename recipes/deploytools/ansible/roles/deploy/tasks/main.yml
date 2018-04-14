@@ -1,7 +1,56 @@
 ---
 
+- name: Install composer dependencies locally
+  local_action:
+    module: shell composer install
 
-- name: Copy project remotely
-  synchronize:
-    src: "{{playbook_dir}}/"
-    dest: "{{ magento_project_folder }}"
+- name: set deployment folder
+  set_fact:
+    deploy_folder: '~/build-ansible-production/'
+
+- name: Create releases folder
+  file:
+    path: '{{ deploy_folder }}/releases'
+    state: directory
+
+- name: Create shared folder
+  file:
+    path: '{{ deploy_folder }}/shared'
+    state: directory
+
+- name: Get release information
+  shell: ls | grep -P '^\d+$' | sort -nr | head -n 1
+  args:
+    chdir: "{{ deploy_folder }}/releases"
+  register: last_release
+
+- name: increase number
+  set_fact:
+    new_release: "{{ (last_release.stdout | default(0)) | int + 1 }}"
+
+- name: Create new release folder
+  file:
+    path: '{{ deploy_folder }}/releases/{{ new_release }}'
+    state: directory
+
+
+# TODO: Upload project
+
+- name: Symlink new release to current
+  file:
+    dest: '{{ deploy_folder }}/current'
+    src: '{{ deploy_folder }}/releases/{{ new_release }}'
+    state: link
+
+- name: Symlink pub to release
+  file:
+    dest: '/data/web/public/pub'
+    src: '{{ deploy_folder }}/releases/{{ new_release }}/pub'
+    state: link
+
+
+
+#- name: Upload project to remote
+#  synchronize:
+#    src: "{{playbook_dir}}/"
+#    dest: "{{ magento_project_folder }}"
