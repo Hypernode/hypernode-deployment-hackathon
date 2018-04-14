@@ -36,7 +36,7 @@ class AssetMover
             if ($item->isDir()) {
                 mkdir($targetPath . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
             } else {
-                copy($item, $targetPath . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+                rename($item, $targetPath . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
             }
         }
     }
