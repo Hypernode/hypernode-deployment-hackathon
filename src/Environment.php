@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Environment
 {
-    const CONFIGURATION_FILE = '.hypernode.build.yml';
+    const CONFIGURATION_FILE = '.hypernode.deploy.yml';
 
 
     /**
@@ -62,7 +62,7 @@ class Environment
     {
         if (!$this->config) {
             if(!file_exists(self::$MAGENTO_ROOT.self::CONFIGURATION_FILE)) {
-                throw new \Exception('.hypernode.build.yml configuration file not found');
+                throw new \Exception('.hypernode.deploy.yml configuration file not found');
             }
 
             $this->config = Yaml::parse(file_get_contents(self::$MAGENTO_ROOT.self::CONFIGURATION_FILE));;

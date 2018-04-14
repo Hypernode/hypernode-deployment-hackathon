@@ -23,7 +23,7 @@
     "extra": {
         "map": [
             [
-                "src/.hypernode.build.yml",
+                ".hypernode.deploy.yml",
                 ".hypernode.build.yml"
             ]
         ]
