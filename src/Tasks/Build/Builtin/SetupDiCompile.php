@@ -17,7 +17,9 @@ class SetupDiCompile
             $this->environment->log(
                 $this->runCommand(new Console\Input\ArrayInput(['command' => 'setup:di:compile']))->fetch()
             );
-        } catch (\Exception | \Error $e) {
+        } catch (\Error $e) {
+            $this->environment->getLogger()->error($e->getMessage());
+        } catch (\Exception $e) {
             $this->environment->getLogger()->error($e->getMessage());
         }
     }
