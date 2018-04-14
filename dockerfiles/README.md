@@ -8,7 +8,7 @@ Run the following:
 
 Run the Ansible playbook to make sure everything is running nicely:
 
-`ansible playbook-build-and-test.yml`
+`ansible-playbook playbook-build-and-test.yml`
 
 ## Usage
 After building, run the following to spin up  a container:
