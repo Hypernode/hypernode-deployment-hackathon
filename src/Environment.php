@@ -34,4 +34,12 @@ class Environment
         $this->logger->notice($message);
     }
 
+    /**
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function getLogger(): \Psr\Log\LoggerInterface
+    {
+        return $this->logger;
+    }
+
 }

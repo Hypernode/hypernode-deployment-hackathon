@@ -1,7 +1,4 @@
 <?php
 
-\Magento\Framework\Component\ComponentRegistrar::register(
-    \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'Hypernode_Deployment',
-    __DIR__
-);
+require_once 'cli_commands.php';
+require_once 'build_tasks.php';
