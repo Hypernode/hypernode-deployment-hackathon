@@ -2,8 +2,7 @@
 
 namespace Hypernode\Deployment\Console\Command;
 
-use Hypernode\Deployment\Build\Task\BuildTaskList;
-use Hypernode\Deployment\Environment;
+use Hypernode\Deployment;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +24,7 @@ class Build extends Command
      */
     public function __construct()
     {
-        $this->env = new Environment();
+        $this->env = new Deployment\Environment();
 
         parent::__construct();
     }
@@ -49,7 +48,7 @@ class Build extends Command
         try {
             $this->env->log('Starting Hypernode Magento 2 build sequence.');
 
-            foreach (BuildTaskList::getTaskList() as $buildTask) {
+            foreach (Deployment\Tasks\Build\BuildTaskList::getTasks() as $buildTask) {
                 $buildTask->setEnvironment($this->env);
                 $buildTask->run();
             }
