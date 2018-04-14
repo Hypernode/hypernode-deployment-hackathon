@@ -1,0 +1,7 @@
+---
+- name: apply configuration to server
+  hosts:
+    - staging
+    - production
+  roles:
+    - deploy
