@@ -76,9 +76,11 @@ RUN apt-get update && apt-get install -y --allow-downgrades --allow-remove-essen
       curl \
       rsync \
       zip \
+      nodejs \
       && curl --silent --show-error https://getcomposer.org/installer | php \
       && mv /composer.phar /usr/local/bin/composer \
       && ln -s /usr/local/bin/composer /usr/bin/composer \
       && curl --silent -LO https://deployer.org/deployer.phar \
       && mv deployer.phar /usr/local/bin/dep \
-      && chmod +x /usr/local/bin/dep
+      && chmod +x /usr/local/bin/dep \
+      && npm install -g yarn
