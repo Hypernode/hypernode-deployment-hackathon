@@ -11,11 +11,11 @@ class SetupUpgrade
 
     public function run()
     {
-        $this->environment->log('Executing DI compile...');
+        $this->environment->log('Executing Setup Upgrade command...');
 
         try {
             $this->environment->log(
-                $this->runCommand(new Console\Input\ArrayInput(['command' => 'setup:upgrade']))->fetch()
+                $this->runCommand(new Console\Input\ArrayInput(['command' => 'setup:upgrade', '--keep-generated' => true]))->fetch()
             );
         } catch (\Exception $e) {
             $this->environment->getLogger()->error($e->getMessage());
