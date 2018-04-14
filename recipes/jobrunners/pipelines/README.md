@@ -2,7 +2,7 @@
 Pipelines is the CI tool of bitbucket.  Pipelines offers free build minutes with your bitbucket plan. Even if you are on free.
 For further pricing of pipelines or information see https://bitbucket.org/product/features/pipelines
 
-## Deploying to Hypernode
+## Deploying to Hypernode (deployer)
 For this pipelines recipe we are using deployer to run our deployment procedures. 
 If you did not setup deployer yet, please do so first.
 1. Copy and commit the following file to the root of your project

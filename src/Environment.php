@@ -11,6 +11,8 @@ use Psr\Log\LoggerInterface;
 class Environment
 {
 
+    public static $MAGENTO_ROOT;
+
     /**
      * @var LoggerInterface
      */
@@ -21,8 +23,8 @@ class Environment
      */
     public function __construct(LoggerInterface $logger = null)
     {
+        self::$MAGENTO_ROOT = realpath(__DIR__ . '/../../../..');
         $this->logger = $logger ?: new Logger('default');
-
     }
 
     /**
