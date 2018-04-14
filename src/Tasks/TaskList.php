@@ -2,7 +2,7 @@
 
 namespace Hypernode\Deployment\Tasks;
 
-use Hypernode\Deployment;
+use Hypernode\Deployment\Tasks\Task\AbstractTask;
 
 abstract class TaskList
     implements TaskListInterface
@@ -23,6 +23,7 @@ abstract class TaskList
      */
     public static function getTasks(): array
     {
+        static::resort();
         return static::$taskList[static::$type];
     }
 
@@ -31,8 +32,8 @@ abstract class TaskList
         usort(
             static::$taskList[static::$type],
             function (
-                Deployment\Tasks\Task\AbstractTask $a,
-                Deployment\Tasks\Task\AbstractTask $b
+                AbstractTask $a,
+                AbstractTask $b
             ) {
                 return $a->getSortOrder() <=> $b->getSortOrder();
             }
@@ -40,20 +41,17 @@ abstract class TaskList
     }
 
     public static function registerTask(
-        Deployment\Tasks\Task\AbstractTask $task
+        AbstractTask ... $tasks
     ) {
         static::$taskList[static::$type][] = $task;
-        static::resort();
     }
 
     public static function registerTasks(
-        Deployment\Tasks\Task\AbstractTask ... $tasks
+        AbstractTask ... $tasks
     ) {
         foreach ($tasks as $task) {
             static::registerTask($task);
         }
-
-        static::resort();
     }
 
 }
