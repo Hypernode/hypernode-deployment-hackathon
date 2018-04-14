@@ -41,7 +41,7 @@ abstract class TaskList
     }
 
     public static function registerTask(
-        AbstractTask ... $tasks
+        AbstractTask $task
     ) {
         static::$taskList[static::$type][] = $task;
     }
