@@ -72,4 +72,10 @@ RUN apt-get update && apt-get install -y --allow-downgrades --allow-remove-essen
       percona-server-client-5.6 \
       percona-server-server-5.6 \
       python \
-      python-mysqldb
+      python-mysqldb \
+      curl \
+      rsync \
+      zip \
+      && curl --silent --show-error https://getcomposer.org/installer | php \
+      && mv /composer.phar /usr/local/bin/composer \
+      && ln -s /usr/local/bin/composer /usr/bin/composer
