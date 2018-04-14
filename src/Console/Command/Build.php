@@ -2,7 +2,7 @@
 
 namespace Hypernode\Deployment\Console\Command;
 
-use Magento\MagentoCloud\Environment;
+use Hypernode\Deployment\Environment;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -17,17 +17,15 @@ class Build extends Command
     const NAME = 'hypernode:build';
     
     /**
-     * @var LoggerInterface
+     * @var \Hypernode\Deployment\Environment
      */
-    protected $logger;
+    protected $env;
 
     /**
-     * @param LoggerInterface $logger
+     * @inheritdoc
      */
-    public function __construct(
-        LoggerInterface $logger = null
-    ) {
-        $this->logger = $logger ?: new Logger('default');
+    public function __construct() {
+        $this->env = new Environment();
 
         parent::__construct();
     }
@@ -49,11 +47,11 @@ class Build extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->logger->info('Starting Hypernode Magento 2 build sequence.');
+            $this->env->log('Starting Hypernode Magento 2 build sequence.');
 
             //TODO: Implement nessesary build methods
 
-            $this->logger->info('Hypernode Magento 2 build sequence completed.');
+            $this->env->log('Hypernode Magento 2 build sequence completed.');
         } catch (\Exception $exception) {
             $this->logger->critical($exception->getMessage());
 
