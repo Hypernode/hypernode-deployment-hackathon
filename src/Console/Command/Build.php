@@ -50,6 +50,7 @@ class Build extends Command
 
             foreach (Deployment\Tasks\Build\BuildTaskList::getTasks() as $buildTask) {
                 $buildTask->setEnvironment($this->env);
+                $buildTask->setApplication($this->getApplication());
                 $buildTask->run();
             }
 
