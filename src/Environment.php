@@ -11,9 +11,13 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Environment
 {
-
-    const MAGENTO_ROOT = __DIR__ . '/../../../../';
     const CONFIGURATION_FILE = '.hypernode.build.yml';
+
+
+    /**
+     * @var bool|string
+     */
+    public static $MAGENTO_ROOT;
 
     /**
      * @var LoggerInterface
@@ -30,6 +34,7 @@ class Environment
      */
     public function __construct(LoggerInterface $logger = null)
     {
+        self::$MAGENTO_ROOT = realpath(__DIR__ . '/../../../..');
         $this->logger = $logger ?: new Logger('default');
     }
 
@@ -56,11 +61,11 @@ class Environment
     public function getConfig(): array
     {
         if (!$this->config) {
-            if(!file_exists(self::MAGENTO_ROOT.self::CONFIGURATION_FILE)) {
+            if(!file_exists(self::$MAGENTO_ROOT.self::CONFIGURATION_FILE)) {
                 throw new \Exception('.hypernode.build.yml configuration file not found');
             }
 
-            $this->config = Yaml::parse(file_get_contents(self::MAGENTO_ROOT.self::CONFIGURATION_FILE));;
+            $this->config = Yaml::parse(file_get_contents(self::$MAGENTO_ROOT.self::CONFIGURATION_FILE));;
         }
         return $this->config;
     }
