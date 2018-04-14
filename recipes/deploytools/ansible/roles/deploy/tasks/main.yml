@@ -14,7 +14,7 @@
 
 - name: set deployment folder
   set_fact:
-    deploy_folder: '~/build-ansible-production/'
+    deploy_folder: '~/build-releases/'
 
 - name: Create releases folder
   file:
@@ -82,7 +82,7 @@
 
 - name: Symlink pub to release
   file:
-    dest: '/data/web/public/pub'
+    dest: '{{ magento_project_folder }}/pub'
     src: '{{ release_folder }}/pub'
     state: link
 
