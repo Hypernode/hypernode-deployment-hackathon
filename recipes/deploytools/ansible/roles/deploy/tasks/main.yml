@@ -1,8 +1,11 @@
 ---
 
+
 - name: Install composer dependencies locally
   local_action:
     module: shell composer install
+    args:
+      chdir: "{{ pwd }}"
 
 - name: set deployment folder
   set_fact:
