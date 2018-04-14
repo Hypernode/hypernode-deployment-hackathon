@@ -13,7 +13,5 @@ After building, run the following to spin up  a container:
 `docker run -d -v /path/to/your/magento2/project:/data/web/magento2 --name magento2-instance hypernode-build-docker:latest mysqld -uroot`
 
 ## TODO
-- Publish on Dockerhub
-- Redis
+- Running redis instance
 - Node.js/NPM 
--
