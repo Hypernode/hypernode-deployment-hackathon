@@ -19,5 +19,13 @@
         "psr-4": {
             "Hypernode\\Deployment\\": "src/"
         }
+    },
+    "extra": {
+        "map": [
+            [
+                "src/.hypernode.build.yml",
+                ".hypernode.build.yml"
+            ]
+        ]
     }
 }
