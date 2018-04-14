@@ -49,7 +49,10 @@ class Deploy extends Command
         try {
             $this->env->log('Starting Hypernode Magento 2 deploy sequence.');
 
-            //TODO: Implement nessesary deploy methods
+            foreach (\Hypernode\Deployment\Tasks\Deploy\DeployTaskList::getTasks() as $deployTask) {
+                $deployTask->setEnvironment($this->env);
+                $deployTask->run();
+            }
 
             $this->env->log('Hypernode Magento 2 deploy sequence completed.');
         } catch (\Exception $exception) {

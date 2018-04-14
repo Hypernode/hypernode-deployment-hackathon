@@ -10,7 +10,7 @@ class SetupUpgrade
 
     public function run()
     {
-        $this->environment->log('Hello World');
+        $this->environment->log('Hello Deploy');
     }
 
 }
