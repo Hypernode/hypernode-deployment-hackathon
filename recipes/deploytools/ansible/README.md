@@ -22,3 +22,8 @@ To activate the virtualenv:
 workon hypernode-deployment-hackathon
 ```
 
+# Deploying magento 
+```
+ansible-playbook deploy.yml  -i hosts  --extra-vars "pwd=$(pwd)"
+```
+By appending `-l production` or `-l staging`, specific environments can be deployed. When not specified, both environment are deployed at once.

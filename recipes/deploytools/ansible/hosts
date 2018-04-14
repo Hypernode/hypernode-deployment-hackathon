@@ -1,0 +1,11 @@
+[production]
+bonoboimperium.hypernode.io  ansible_user=app
+
+[production:vars]
+magento_project_folder="/data/web/hackathon/production"
+
+[staging]
+magweb.bonoboimperium.hypernode.io  ansible_user=app
+
+[staging:vars]
+magento_project_folder="/data/web/hackathon/staging"

@@ -1,0 +1,13 @@
+shared_files:
+  - 'app/etc/env.php'
+  - 'var/.maintenance.ip'
+shared_dirs:
+  - 'var/log'
+  - 'var/backups'
+  - 'pub/media'
+writable_dirs:
+  - 'var'
+  - 'pub/static'
+  - 'pub/media'
+clear_paths:
+  - 'var/cache/*'
