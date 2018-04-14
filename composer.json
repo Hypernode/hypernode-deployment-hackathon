@@ -23,8 +23,8 @@
     "extra": {
         "map": [
             [
-                ".hypernode.deploy.yml",
-                ".hypernode.build.yml"
+                ".hypernode.ci.yml",
+                ".hypernode.ci.yml"
             ]
         ]
     }
