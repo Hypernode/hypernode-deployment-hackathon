@@ -1,0 +1,6 @@
+[production]
+bonoboimperium.hypernode.io  ansible_user=app
+
+
+[staging]
+bonoboimperium.hypernode.io  ansible_user=app

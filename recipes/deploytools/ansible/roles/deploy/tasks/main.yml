@@ -1,0 +1,7 @@
+---
+
+
+- name: Copy project remotely
+  synchronize:
+    src: "{{playbook_dir}}/"
+    dest: /data/web/hackathon
