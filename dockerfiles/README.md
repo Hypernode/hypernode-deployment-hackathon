@@ -14,4 +14,3 @@ After building, run the following to spin up  a container:
 
 ## TODO
 - Running redis instance
-- Node.js/NPM 
