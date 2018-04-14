@@ -23,15 +23,18 @@ abstract class TaskList
      */
     public static function getTasks(): array
     {
-        return self::$taskList[self::$type];
+        return static::$taskList[static::$type];
     }
 
     public static function resort()
     {
         usort(
-            self::$taskList[self::$type],
-            function (Deployment\Tasks\Task\AbstractTask $task) {
-                return $task->getSortOrder() <=> 0;
+            static::$taskList[static::$type],
+            function (
+                Deployment\Tasks\Task\AbstractTask $a,
+                Deployment\Tasks\Task\AbstractTask $b
+            ) {
+                return $a->getSortOrder() <=> $b->getSortOrder();
             }
         );
     }
@@ -39,18 +42,18 @@ abstract class TaskList
     public static function registerTask(
         Deployment\Tasks\Task\AbstractTask $task
     ) {
-        self::$taskList[self::$type][] = $task;
-        self::resort();
+        static::$taskList[static::$type][] = $task;
+        static::resort();
     }
 
     public static function registerTasks(
         Deployment\Tasks\Task\AbstractTask ... $tasks
     ) {
         foreach ($tasks as $task) {
-            self::registerTask($task);
+            static::registerTask($task);
         }
-        
-        self::resort();
+
+        static::resort();
     }
 
 }
