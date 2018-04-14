@@ -1,0 +1,22 @@
+.base: &base
+    user: app
+    port: 22
+    identityFile: ~/.ssh/id_rsa
+    forwardAgent: true
+    multiplexing: true
+    keep_releases: 2
+    sshOptions:
+      UserKnownHostsFile: /dev/null
+      StrictHostKeyChecking: no
+
+domain.com:
+  <<: *base
+  hostname: nodename.hypernode.io
+  stage: production
+  deploy_path: ~/builds-production
+
+staging.domain.com:
+  <<: *base
+  hostname: devnodename.hypernode.io
+  stage: staging
+  deploy_path: ~/builds-staging
