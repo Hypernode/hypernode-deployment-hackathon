@@ -1,11 +1,11 @@
 <?php
 
-namespace Hypernode\Deployment\Build\Task;
+namespace Hypernode\Deployment\Tasks\Task;
 
 use Hypernode\Deployment;
 
-abstract class AbstractBuildTask
-    implements BuildTaskInterface
+abstract class AbstractTask
+    implements Deployment\Tasks\Task\TaskInterface
 {
 
     /**

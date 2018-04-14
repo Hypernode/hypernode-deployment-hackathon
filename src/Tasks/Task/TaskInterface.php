@@ -1,8 +1,8 @@
 <?php
 
-namespace Hypernode\Deployment\Build\Task;
+namespace Hypernode\Deployment\Tasks\Task;
 
-interface BuildTaskInterface
+interface TaskInterface
 {
 
     public function getSortOrder(): int;
