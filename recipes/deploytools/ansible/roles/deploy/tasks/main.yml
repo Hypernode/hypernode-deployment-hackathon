@@ -64,7 +64,15 @@
   synchronize:
     src: "{{pwd}}/"
     dest: "{{ release_folder }}/"
-    rsync_opts: "{{ ('--exclude=' + (shared_dirs | join(' --exclude='))).split(' ') }}"
+    rsync_opts: "{{ ('--exclude=' + ((shared_dirs + shared_files) | join(' --exclude='))).split(' ') }}"
+
+- name: Symlink shared files
+  file:
+    dest: "{{release_folder}}/{{item}}"
+    src: "{{ deploy_folder }}/shared/{{item}}"
+    state: link
+  ignore_errors: yes
+  with_items: "{{ shared_files + shared_dirs }}"
 
 - name: Symlink new release to current
   file:
