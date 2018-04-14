@@ -26,10 +26,31 @@ abstract class TaskList
         return self::$taskList[self::$type];
     }
 
+    public static function resort()
+    {
+        usort(
+            self::$taskList[self::$type],
+            function (Deployment\Tasks\Task\AbstractTask $task) {
+                return $task->getSortOrder() <=> 0;
+            }
+        );
+    }
+
     public static function registerTask(
         Deployment\Tasks\Task\AbstractTask $task
     ) {
         self::$taskList[self::$type][] = $task;
+        self::resort();
+    }
+
+    public static function registerTasks(
+        Deployment\Tasks\Task\AbstractTask ... $tasks
+    ) {
+        foreach ($tasks as $task) {
+            self::registerTask($task);
+        }
+        
+        self::resort();
     }
 
 }

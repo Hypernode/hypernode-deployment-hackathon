@@ -15,10 +15,19 @@ interface TaskListInterface
     /**
      * @param \Hypernode\Deployment\Build\Tasks\Task\AbstractTask $task
      *
-     * @return \Hypernode\Deployment\Tasks\TaskListInterface
+     * @return void
      */
     public static function registerTask(
         Deployment\Tasks\Task\AbstractTask $task
+    );
+
+    /**
+     * @param \Hypernode\Deployment\Tasks\Task\AbstractTask[] ...$tasks
+     *
+     * @return void
+     */
+    public static function registerTasks(
+        Deployment\Tasks\Task\AbstractTask ...$tasks
     );
 
 }
