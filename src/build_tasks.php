@@ -5,6 +5,7 @@
 
 if (PHP_SAPI == 'cli') {
     \Hypernode\Deployment\Tasks\Build\BuildTaskList::registerTasks(
-        new \Hypernode\Deployment\Tasks\Build\Builtin\SetupDiCompile(100)
+        new \Hypernode\Deployment\Tasks\Build\Builtin\SetupDiCompile(100),
+        new \Hypernode\Deployment\Tasks\Build\Builtin\SetupStaticContentDeploy(200)
     );
 }
