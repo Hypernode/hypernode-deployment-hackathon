@@ -1,0 +1,48 @@
+---
+- name: Build and test hypernode-build-docker instance on project
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Build base docker image
+      docker_image:
+        name: hypernode-build-docker
+        path: "{{ playbook_dir }}"
+        tag: latest
+        state: present
+    - name: Check Magento 2 project existence
+      stat:
+        path: /tmp/hackathon-magento2-project
+      register: magento2_project_dir
+    - name: Create Magento 2 project
+      shell: composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition /tmp/hackathon-magento2-project
+      changed_when: false
+      when: not magento2_project_dir.stat.exists
+    - name: Run a docker image
+      docker_container:
+        name: magento2-build-instance
+        image: hypernode-build-docker:latest
+        command:
+          - mysqld -uroot
+        volumes:
+          - /tmp/hackathon-magento2-project:/magento2
+    - name: Add container to inventory
+      add_host:
+        name: magento2-build-instance
+        ansible_connection: docker
+      changed_when: false
+    - name: Create user app
+      delegate_to: magento2-build-instance
+      mysql_user:
+        name: magento2
+        password: magento2
+        priv: '*.*:ALL'
+    - name: Create database magento2
+      delegate_to: magento2-build-instance
+      mysql_db:
+        name: magento2
+        state: present
+    - name: Test the instance
+      delegate_to: magento2-build-instance
+      shell: /magento2/bin/magento setup:install --db-host="127.0.0.1" --db-user="magento2" --db-password="magento2" --db-name="magento2" --admin-user="admin" --admin-password="Backend1234" --admin-email="admin@example.com" --admin-firstname="Firstname" --admin-lastname="Lastname"
+      register: docker_output
+      changed_when: false
