@@ -3,6 +3,9 @@
     "description": "Deployment tools for Hypernode",
     "require": {
         "php": "^7.0",
+        "symfony/console": "*",
+        "monolog/monolog": "*",
+        "psr/log": "*",
         "magento/magento-composer-installer": "*"
     },
     "type": "magento2-module",
