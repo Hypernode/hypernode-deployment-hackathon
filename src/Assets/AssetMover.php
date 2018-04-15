@@ -3,6 +3,7 @@
 namespace Hypernode\Deployment\Assets;
 
 use Exception;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem\Driver\File;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
@@ -33,16 +34,20 @@ class AssetMover
         }
 
         // Iterate through files
+        /** @var RecursiveDirectoryIterator $iterator */
         $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator(
+                $source,
+                RecursiveDirectoryIterator::SKIP_DOTS
+            ),
             RecursiveIteratorIterator::SELF_FIRST
         );
 
         foreach ($iterator as $item) {
             if ($item->isDir()) {
-                $fileSystem->createDirectory($target . $item->getSubPathName());
+                $fileSystem->createDirectory($target . $iterator->getSubPathname());
             } else {
-                $fileSystem->rename($item, $target . $item->getSubPathName());
+                $fileSystem->rename($item, $target . $iterator->getSubPathname());
             }
         }
     }
