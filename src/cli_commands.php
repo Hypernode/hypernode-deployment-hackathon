@@ -2,6 +2,10 @@
 /**
  * Register CLI commands to Magento even when Magento is not installed yet.
  */
+
+use Hypernode\Deployment\Console\CommandList;
+use Magento\Framework\Console\CommandLocator;
+
 if (PHP_SAPI == 'cli') {
-    \Magento\Framework\Console\CommandLocator::register(\Hypernode\Deployment\Console\CommandList::class);
+    CommandLocator::register(CommandList::class);
 }

@@ -2,47 +2,48 @@
 
 namespace Hypernode\Deployment\Tasks\Build\Builtin;
 
-use Magento\Framework;
-use Hypernode\Deployment;
-use Symfony\Component\Console;
+use Error;
+use Exception;
+use Hypernode\Deployment\Assets\AssetMover;
+use Hypernode\Deployment\Tasks\Task\AbstractTask;
+use Symfony\Component\Console\Input\ArrayInput;
 
-class SetupDiCompile
-    extends Deployment\Tasks\Task\AbstractTask
+class SetupDiCompile extends AbstractTask
 {
-
+    /**
+     * @return void
+     */
     public function run()
     {
         try {
             $this->environment->log('Executing DI compile...');
             $this->environment->log(
-                $this->runCommand(new Console\Input\ArrayInput(['command' => 'setup:di:compile']))->fetch()
+                $this->runCommand(new ArrayInput(['command' => 'setup:di:compile']))->fetch()
             );
-        } catch (\Error $e) {
+        } catch (Error $e) {
             $this->environment->getLogger()->error($e->getMessage());
 
             return;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->environment->getLogger()->error($e->getMessage());
 
             return;
         }
 
         try {
-            $this->environment->log(sprintf('Moving compiled assets to %s', $this->getGeneratedCodeDir()));
-            Deployment\Assets\AssetMover::moveAssetDirectory($this->getGeneratedCodeDir());
+            $this->environment->log(
+                sprintf('Moving compiled assets to %s', $this->environment->getGeneratedCodeDir())
+            );
+            // TODO change?
+            AssetMover::moveAssetDirectory(
+                $this->environment->getProjectRoot() . $this->environment->getGeneratedCodeDir(),
+                $this->environment->getProjectRoot() . $this->environment->getGeneratedCodeDirInit()
+            );
             $this->environment->log('Done moving compiled assets');
-        } catch (\Error $e) {
+        } catch (Error $e) {
             $this->environment->getLogger()->error($e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->environment->getLogger()->error($e->getMessage());
         }
     }
-
-    protected function getGeneratedCodeDir(): string
-    {
-        $directories = Framework\App\Filesystem\DirectoryList::getDefaultConfig();
-
-        return $directories[Framework\App\Filesystem\DirectoryList::GENERATION]['path'];
-    }
-
 }

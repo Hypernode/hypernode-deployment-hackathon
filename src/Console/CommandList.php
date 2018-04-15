@@ -2,22 +2,22 @@
 
 namespace Hypernode\Deployment\Console;
 
+use Exception;
 use Hypernode\Deployment\Console\Command\Build;
 use Hypernode\Deployment\Console\Command\Deploy;
-use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Console\CommandListInterface;
 
 /**
  * Class CommandList
  */
-class CommandList implements \Magento\Framework\Console\CommandListInterface
+class CommandList implements CommandListInterface
 {
-    
     /**
      * Gets list of command classes
      *
      * @return string[]
      */
-    protected function getCommandsClasses()
+    protected function getCommandsClasses(): array
     {
         return [
             Build::class,
@@ -26,18 +26,21 @@ class CommandList implements \Magento\Framework\Console\CommandListInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
+     *
+     * @throws Exception
      */
-    public function getCommands()
+    public function getCommands(): array
     {
         $commands = [];
         foreach ($this->getCommandsClasses() as $class) {
             if (class_exists($class)) {
                 $commands[] = new $class();
             } else {
-                throw new \Exception('Class ' . $class . ' does not exist');
+                throw new Exception('Class ' . $class . ' does not exist');
             }
         }
+
         return $commands;
     }
 }
