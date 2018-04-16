@@ -31,7 +31,7 @@ class Environment
     /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(LoggerInterface $logger = NULL)
     {
         self::$MAGENTO_ROOT = realpath(__DIR__ . '/../../../..');
         $this->logger = $logger ?: new Logger('default');
@@ -47,25 +47,28 @@ class Environment
     }
 
     /**
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
-    public function getLogger(): \Psr\Log\LoggerInterface
+    public function getLogger(): LoggerInterface
     {
         return $this->logger;
     }
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getConfig(): array
     {
         if (!$this->config) {
-            if(!file_exists(self::$MAGENTO_ROOT.self::CONFIGURATION_FILE)) {
-                throw new \Exception('.hypernode.ci.yml configuration file not found');
+            if (file_exists(self::$MAGENTO_ROOT . self::CONFIGURATION_FILE)) {
+                $this->config = Yaml::parse(file_get_contents(self::$MAGENTO_ROOT . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));;
+            } else {
+                $this->logger->warning(sprintf('%s not found. Falling back to default configuration file', self::CONFIGURATION_FILE));
+                $this->config = Yaml::parse(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));
             }
-
-            $this->config = Yaml::parse(file_get_contents(self::$MAGENTO_ROOT.DIRECTORY_SEPARATOR.self::CONFIGURATION_FILE));;
         }
+
         return $this->config;
     }
 

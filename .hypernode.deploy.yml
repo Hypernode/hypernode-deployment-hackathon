@@ -1,6 +1,0 @@
-build:
-  static-content:
-    excluded-themes: ''
-    threads: 1
-
-deploy:

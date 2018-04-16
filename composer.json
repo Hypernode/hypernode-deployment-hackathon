@@ -9,7 +9,7 @@
         "psr/log": "*",
         "magento/magento-composer-installer": "*"
     },
-    "type": "magento2-module",
+    "type": "magento2-component",
     "version": "0.1.0",
     "license": "MIT",
     "autoload": {
@@ -23,7 +23,7 @@
     "extra": {
         "map": [
             [
-                ".hypernode.ci.yml",
+                "src/.hypernode.ci.yml",
                 ".hypernode.ci.yml"
             ]
         ]
