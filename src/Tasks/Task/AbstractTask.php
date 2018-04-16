@@ -2,69 +2,99 @@
 
 namespace Hypernode\Deployment\Tasks\Task;
 
-use Hypernode\Deployment;
-use Symfony\Component\Console;
+use Exception;
+use Hypernode\Deployment\Environment;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
 
-abstract class AbstractTask
-    implements Deployment\Tasks\Task\TaskInterface
+abstract class AbstractTask implements TaskInterface
 {
-
     /**
-     * @var Deployment\Environment
+     * @var Environment
      */
     protected $environment;
 
     /**
-     * @var \Symfony\Component\Console\Command\Command
+     * @var Command
      */
     protected $parentCommand;
 
     /**
-     * @var \Symfony\Component\Console\Application
+     * @var Application
      */
     protected $application;
 
+    /**
+     * @var int
+     */
     private $sortOrder = 99999;
 
-    public function __construct(
-        int $sortOrder = 99999
-    ) {
+    /**
+     * Constructor.
+     *
+     * @param int $sortOrder
+     */
+    public function __construct(int $sortOrder = 99999)
+    {
         $this->sortOrder = $sortOrder;
     }
 
-    public function setEnvironment(Deployment\Environment $environment): AbstractTask
+    /**
+     * @param Environment $environment
+     *
+     * @return AbstractTask
+     */
+    public function setEnvironment(Environment $environment): AbstractTask
     {
         $this->environment = $environment;
-
         return $this;
     }
 
-    public function setParentCommand(Console\Command\Command $parentCommand): AbstractTask
+    /**
+     * @param Command $parentCommand
+     *
+     * @return AbstractTask
+     */
+    public function setParentCommand(Command $parentCommand): AbstractTask
     {
         $this->parentCommand = $parentCommand;
-
         return $this;
     }
 
-    public function setApplication(Console\Application $application)
+    /**
+     * @param Application $application
+     *
+     * @return AbstractTask
+     */
+    public function setApplication(Application $application): AbstractTask
     {
         $this->application = $application;
+        return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getSortOrder(): int
     {
         return $this->sortOrder;
     }
 
-    protected function runCommand(
-        Console\Input\InputInterface $input
-    ): Console\Output\OutputInterface {
-        $output = new Console\Output\BufferedOutput();
+    /**
+     * @param InputInterface $input
+     * @return BufferedOutput
+     *
+     * @throws Exception
+     */
+    protected function runCommand(InputInterface $input): BufferedOutput
+    {
+        $output = new BufferedOutput();
         $application = clone $this->application;
         $application->setAutoExit(false);
         $application->run($input, $output);
 
         return $output;
     }
-
 }

@@ -4,9 +4,10 @@
  */
 
 use \Hypernode\Deployment\Tasks\Deploy\Builtin\SetupUpgrade;
+use Hypernode\Deployment\Tasks\Deploy\DeployTaskList;
 
 if (PHP_SAPI == 'cli') {
-    \Hypernode\Deployment\Tasks\Deploy\DeployTaskList::registerTasks(
+    DeployTaskList::registerTasks(
         new SetupUpgrade(100)
     );
 }

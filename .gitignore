@@ -1,4 +1,5 @@
 deploy.retry
+/.idea/
 /composer.lock
 /vendor/
 *.retry

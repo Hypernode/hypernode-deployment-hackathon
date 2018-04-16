@@ -3,11 +3,10 @@
 namespace Hypernode\Deployment\Tasks;
 
 use Hypernode\Deployment\Tasks\Task\AbstractTask;
+use Hypernode\Deployment\Tasks\Task\TaskInterface;
 
-abstract class TaskList
-    implements TaskListInterface
+abstract class TaskList implements TaskListInterface
 {
-
     /**
      * @var array
      */
@@ -19,7 +18,7 @@ abstract class TaskList
     protected static $type = null;
 
     /**
-     * @return \Hypernode\Deployment\Tasks\Task\TaskInterface[]|\Hypernode\Deployment\Tasks\Task\AbstractTask[]
+     * @return TaskInterface[]|AbstractTask[]
      */
     public static function getTasks(): array
     {
@@ -27,6 +26,9 @@ abstract class TaskList
         return static::$taskList[static::$type];
     }
 
+    /**
+     * @return void
+     */
     public static function resort()
     {
         usort(
@@ -40,18 +42,25 @@ abstract class TaskList
         );
     }
 
-    public static function registerTask(
-        AbstractTask $task
-    ) {
+    /**
+     * @param AbstractTask $task
+     *
+     * @return void
+     */
+    public static function registerTask(AbstractTask $task)
+    {
         static::$taskList[static::$type][] = $task;
     }
 
-    public static function registerTasks(
-        AbstractTask ... $tasks
-    ) {
+    /**
+     * @param AbstractTask[] ...$tasks
+     *
+     * @return void
+     */
+    public static function registerTasks(AbstractTask ... $tasks)
+    {
         foreach ($tasks as $task) {
             static::registerTask($task);
         }
     }
-
 }
