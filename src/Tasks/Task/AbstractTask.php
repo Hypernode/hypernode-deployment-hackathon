@@ -15,6 +15,11 @@ abstract class AbstractTask
     protected $environment;
 
     /**
+     * @var \Symfony\Component\Console\Command\Command
+     */
+    protected $parentCommand;
+
+    /**
      * @var \Symfony\Component\Console\Application
      */
     protected $application;
@@ -27,9 +32,18 @@ abstract class AbstractTask
         $this->sortOrder = $sortOrder;
     }
 
-    public function setEnvironment(Deployment\Environment $environment)
+    public function setEnvironment(Deployment\Environment $environment): AbstractTask
     {
         $this->environment = $environment;
+
+        return $this;
+    }
+
+    public function setParentCommand(Console\Command\Command $parentCommand): AbstractTask
+    {
+        $this->parentCommand = $parentCommand;
+
+        return $this;
     }
 
     public function setApplication(Console\Application $application)

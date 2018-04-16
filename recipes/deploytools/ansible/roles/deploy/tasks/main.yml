@@ -1,0 +1,94 @@
+---
+
+- name: Install composer dependencies locally
+  local_action:
+    module: shell composer install  --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
+    args:
+      chdir: "{{ pwd }}"
+
+- name: Run Hypernode build
+  local_action: 
+    module: shell php {{pwd}}/bin/magento hypernode:build > {{pwd}}/var/build-output.txt
+    args:
+      chdir: "{{ pwd }}"
+
+- name: set deployment folder
+  set_fact:
+    deploy_folder: '~/build-releases/'
+
+- name: Create releases folder
+  file:
+    path: '{{ deploy_folder }}/releases'
+    state: directory
+
+
+- name: Get release information
+  shell: ls | grep -P '^\d+$' | sort -nr | head -n 1
+  args:
+    chdir: "{{ deploy_folder }}/releases"
+  register: last_release
+
+- name: increase release id
+  set_fact:
+    new_release: "{{ (last_release.stdout | default(0)) | int + 1 }}"
+
+- name: set new release folder
+  set_fact:
+    release_folder: "{{ deploy_folder }}/releases/{{ new_release }}"
+
+- name: Create shared folder
+  file:
+    path: '{{ deploy_folder }}/shared'
+    state: directory
+
+- name: Create shared folders
+  file:
+    path: '{{ deploy_folder }}/shared/{{ item }}'
+    state: directory
+  with_items: "{{ shared_dirs }}"
+
+- name: Sync shared files
+  synchronize:
+    src: "{{pwd}}/{{ item }}"
+    dest: "{{ deploy_folder }}/shared/{{ item }}"
+    rsync_opts: "--ignore-existing"
+  ignore_errors: yes
+  with_items: "{{ shared_files }}"
+
+- name: Create new release folder
+  file:
+    path: '{{ release_folder }}'
+    state: directory
+
+- name: Upload project to remote
+  synchronize:
+    src: "{{pwd}}/"
+    dest: "{{ release_folder }}/"
+    rsync_opts: "{{ ('--exclude=' + ((shared_dirs + shared_files) | join(' --exclude='))).split(' ') }}"
+
+- name: Symlink shared files
+  file:
+    dest: "{{release_folder}}/{{item}}"
+    src: "{{ deploy_folder }}/shared/{{item}}"
+    state: link
+  ignore_errors: yes
+  with_items: "{{ shared_files + shared_dirs }}"
+
+- name: Symlink new release to current
+  file:
+    dest: '{{ deploy_folder }}/current'
+    src: '{{ release_folder }}'
+    state: link
+
+- name: Symlink pub to release
+  file:
+    dest: '{{ magento_project_folder }}/pub'
+    src: '{{ release_folder }}/pub'
+    state: link
+
+- name: Run Hypernode deploy
+  shell: "php {{ release_folder }}/bin/magento hypernode:deploy > {{ release_folder }}/var/build-output.txt"
+  args:
+    chdir: "{{ release_folder }}/"
+
+

@@ -22,3 +22,9 @@ To activate the virtualenv:
 workon hypernode-deployment-hackathon
 ```
 
+# Deploying Magento 
+Go to your Magento project, and call the deploy.sh from this repository.
+```
+/path/to/ansible/deploy.sh
+```
+By appending `-l production` or `-l staging`, specific environments can be deployed. When not specified, both environment are deployed at once.

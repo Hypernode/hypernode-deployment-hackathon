@@ -1,3 +1,4 @@
+deploy.retry
 /composer.lock
 /vendor/
 *.retry

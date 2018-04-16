@@ -51,6 +51,7 @@ class Deploy extends Command
 
             foreach (\Hypernode\Deployment\Tasks\Deploy\DeployTaskList::getTasks() as $deployTask) {
                 $deployTask->setEnvironment($this->env);
+                $deployTask->setApplication($this->getApplication());
                 $deployTask->run();
             }
 
