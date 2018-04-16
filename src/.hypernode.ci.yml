@@ -1,0 +1,26 @@
+build:
+
+deploy:
+    admin:
+        url: '/admin'
+
+static-content:
+    strategy: build         #Use either build or deploy; If not set falls back to build.
+    sign-files: true        #Sign static files setting
+    js:
+        merge: true
+        bundling: true
+        minify: false
+    css:
+        merge: true
+        minify: true
+    frontend:               #Static Content Deploy will build these frontend theme's with specified languages
+        Magento/Blank:
+            - de/DE
+        Magento/Luma:
+            - nl/NL
+            - en/US
+    admin:                  #Static Content Deploy will build these admin theme's with specified languages
+        Magento/Backend:
+            - en/US
+            - nl/NL

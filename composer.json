@@ -2,7 +2,7 @@
     "name": "hypernode/deployment",
     "description": "Deployment tools for Hypernode",
     "license": "MIT",
-    "type": "magento2-module",
+    "type": "magento2-component",
     "require": {
         "php": "^7.0",
         "magento/module-deploy": "100.2.*",
@@ -24,7 +24,7 @@
     "extra": {
         "map": [
             [
-                ".hypernode.ci.yml",
+                "src/.hypernode.ci.yml",
                 ".hypernode.ci.yml"
             ]
         ],

@@ -37,7 +37,7 @@ class Environment
      *
      * @throws Exception
      */
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(LoggerInterface $logger = NULL)
     {
         $this->logger = $logger ?: new Logger('default');
 
@@ -77,16 +77,17 @@ class Environment
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getConfig(): array
     {
         if (!$this->config) {
-            if (!file_exists($this->getConfigurationFilePath())) {
-                throw new Exception(sprintf('%s configuration file not found', self::CONFIGURATION_FILE));
+            if (file_exists(self::$MAGENTO_ROOT . self::CONFIGURATION_FILE)) {
+                $this->config = Yaml::parse(file_get_contents(self::$MAGENTO_ROOT . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));;
+            } else {
+                $this->logger->warning(sprintf('%s not found. Falling back to default configuration file', self::CONFIGURATION_FILE));
+                $this->config = Yaml::parse(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));
             }
-
-            $this->config = Yaml::parse(file_get_contents($this->getConfigurationFilePath()));
         }
 
         return $this->config;
