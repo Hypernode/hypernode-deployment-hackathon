@@ -2,7 +2,9 @@
 
 namespace Hypernode\Deployment\Console\Command;
 
-use Hypernode\Deployment;
+use Exception;
+use Hypernode\Deployment\Environment;
+use Hypernode\Deployment\Tasks\Build\BuildTaskList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,52 +17,57 @@ class Build extends Command
     const NAME = 'hypernode:build';
 
     /**
-     * @var \Hypernode\Deployment\Environment
+     * @var Environment
      */
     protected $env;
 
     /**
-     * @inheritdoc
+     * Constructor.
+     *
+     * @throws Exception
      */
     public function __construct()
     {
-        $this->env = new Deployment\Environment();
-
+        $this->env = new Environment();
         parent::__construct();
     }
 
     /**
-     * @inheritdoc
+     * @return void
      */
     protected function configure()
     {
         $this->setName(static::NAME)
-             ->setDescription('Builds the Magento 2 application');
+            ->setDescription('Builds the Magento 2 application');
 
         parent::configure();
     }
 
     /**
-     * @inheritdoc
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return void
+     *
+     * @throws Exception
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
             $this->env->log('Starting Hypernode Magento 2 build sequence.');
 
-            foreach (Deployment\Tasks\Build\BuildTaskList::getTasks() as $buildTask) {
-                $buildTask->setEnvironment($this->env);
-                $buildTask->setApplication($this->getApplication());
-                $buildTask->setParentCommand($this);
-                $buildTask->run();
+            foreach (BuildTaskList::getTasks() as $buildTask) {
+                $buildTask->setEnvironment($this->env)
+                    ->setApplication($this->getApplication())
+                    ->setParentCommand($this)
+                    ->run();
             }
 
             $this->env->log('Hypernode Magento 2 build sequence completed.');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->env->getLogger()->critical($exception->getMessage());
 
             throw $exception;
         }
     }
-
 }

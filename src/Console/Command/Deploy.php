@@ -2,9 +2,9 @@
 
 namespace Hypernode\Deployment\Console\Command;
 
+use Exception;
 use Hypernode\Deployment\Environment;
-use Monolog\Logger;
-use Psr\Log\LoggerInterface;
+use Hypernode\Deployment\Tasks\Deploy\DeployTaskList;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,21 +17,24 @@ class Deploy extends Command
     const NAME = 'hypernode:deploy';
 
     /**
-     * @var \Hypernode\Deployment\Environment
+     * @var Environment
      */
     protected $env;
 
     /**
-     * @inheritdoc
+     * Constructor.
+     *
+     * @throws Exception
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->env = new Environment();
 
         parent::__construct();
     }
 
     /**
-     * @inheritdoc
+     * @return void
      */
     protected function configure()
     {
@@ -42,25 +45,29 @@ class Deploy extends Command
     }
 
     /**
-     * @inheritdoc
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return void
+     *
+     * @throws Exception
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
             $this->env->log('Starting Hypernode Magento 2 deploy sequence.');
 
-            foreach (\Hypernode\Deployment\Tasks\Deploy\DeployTaskList::getTasks() as $deployTask) {
-                $deployTask->setEnvironment($this->env);
-                $deployTask->setApplication($this->getApplication());
-                $deployTask->run();
+            foreach (DeployTaskList::getTasks() as $deployTask) {
+                $deployTask->setEnvironment($this->env)
+                    ->setApplication($this->getApplication())
+                    ->setParentCommand($this)
+                    ->run();
             }
 
             $this->env->log('Hypernode Magento 2 deploy sequence completed.');
-        } catch (\Exception $exception) {
-            $this->logger->critical($exception->getMessage());
-
+        } catch (Exception $exception) {
+            $this->env->getLogger()->critical($exception->getMessage());
             throw $exception;
         }
     }
-
 }

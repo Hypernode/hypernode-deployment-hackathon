@@ -2,32 +2,27 @@
 
 namespace Hypernode\Deployment\Tasks;
 
-use Hypernode\Deployment;
+use Hypernode\Deployment\Tasks\Task\TaskInterface;
+use Hypernode\Deployment\Tasks\Task\AbstractTask;
 
 interface TaskListInterface
 {
-
     /**
-     * @return \Hypernode\Deployment\Tasks\Task\TaskInterface[]
+     * @return TaskInterface[]
      */
     public static function getTasks(): array;
 
     /**
-     * @param \Hypernode\Deployment\Build\Tasks\Task\AbstractTask $task
+     * @param AbstractTask $task
      *
      * @return void
      */
-    public static function registerTask(
-        Deployment\Tasks\Task\AbstractTask $task
-    );
+    public static function registerTask(AbstractTask $task);
 
     /**
-     * @param \Hypernode\Deployment\Tasks\Task\AbstractTask[] ...$tasks
+     * @param AbstractTask[] ...$tasks
      *
      * @return void
      */
-    public static function registerTasks(
-        Deployment\Tasks\Task\AbstractTask ...$tasks
-    );
-
+    public static function registerTasks(AbstractTask ...$tasks);
 }
