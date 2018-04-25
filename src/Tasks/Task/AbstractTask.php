@@ -26,6 +26,11 @@ abstract class AbstractTask implements TaskInterface
      */
     protected $application;
 
+    /*
+     * runCommand exit code
+     */
+    protected $exitCode;
+
     /**
      * @var int
      */
@@ -93,7 +98,7 @@ abstract class AbstractTask implements TaskInterface
         $output = new BufferedOutput();
         $application = clone $this->application;
         $application->setAutoExit(false);
-        $application->run($input, $output);
+        $this->exitCode = $application->run($input, $output);
 
         return $output;
     }
