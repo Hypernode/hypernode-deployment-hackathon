@@ -150,4 +150,22 @@ class Environment
     {
         return $this->getInitPath() . 'static' . DIRECTORY_SEPARATOR;
     }
+
+    /**
+     * Get the Magento version number
+     * @return string
+     */
+    public function getMagentoVersion() {
+        $composerjsonpath = $this->getProjectRoot(). "/vendor/magento/magento2-base/composer.json";
+        $version = '2.1.0'; //If we can't find a version use minimal functionality
+        if (file_exists($composerjsonpath)) {
+            $jsondata = json_decode(file_get_contents($composerjsonpath), true);
+            if (array_key_exists("version", $jsondata)) {
+                $version = $jsondata["version"];
+            }
+        }
+
+        return $version;
+    }
+
 }
