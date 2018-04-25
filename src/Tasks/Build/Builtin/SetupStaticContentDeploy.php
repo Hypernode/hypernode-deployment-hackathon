@@ -87,6 +87,10 @@ class SetupStaticContentDeploy extends AbstractTask
             $parameters['--' . DeployStaticOptions::LANGUAGES_ARGUMENT] = $languages;
         }
 
+        if (isset($this->environment->getConfig()['static-content']['jobs'])) {
+            $parameters['--' . DeployStaticOptions::JOBS_AMOUNT] = $languages;
+        }
+
         return new ArrayInput($parameters);
     }
 }

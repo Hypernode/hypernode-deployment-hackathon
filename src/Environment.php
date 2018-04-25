@@ -82,8 +82,8 @@ class Environment
     public function getConfig(): array
     {
         if (!$this->config) {
-            if (file_exists(self::$MAGENTO_ROOT . self::CONFIGURATION_FILE)) {
-                $this->config = Yaml::parse(file_get_contents(self::$MAGENTO_ROOT . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));;
+            if (file_exists($this->getProjectRoot() . self::CONFIGURATION_FILE)) {
+                $this->config = Yaml::parse(file_get_contents($this->getProjectRoot() . self::CONFIGURATION_FILE));;
             } else {
                 $this->logger->warning(sprintf('%s not found. Falling back to default configuration file', self::CONFIGURATION_FILE));
                 $this->config = Yaml::parse(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));
@@ -118,12 +118,14 @@ class Environment
     }
 
     /**
+     * For magento 2.1: var/generation
+     * For magento 2.2: generation/code
      * @return string
      */
     public function getGeneratedCodeDir(): string
     {
         $directories = DirectoryList::getDefaultConfig();
-        return $directories[DirectoryList::GENERATED_CODE]['path'];
+        return $directories[DirectoryList::GENERATION]['path'];
     }
 
     /**
@@ -131,7 +133,26 @@ class Environment
      */
     public function getGeneratedCodeDirInit(): string
     {
-        return $this->getInitPath() . 'generated' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+        return $this->getInitPath() . $this->getGeneratedCodeDir() . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * For magento 2.1: var/di
+     * For magento 2.2: generation/metadata
+     * @return string
+     */
+    public function getGeneratedMetadataDir(): string
+    {
+        $directories = DirectoryList::getDefaultConfig();
+        return $directories[DirectoryList::GENERATION]['path'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeneratedMetadataDirInit(): string
+    {
+        return $this->getInitPath() . $this->getGeneratedMetadataDir() . DIRECTORY_SEPARATOR;
     }
 
     /**
