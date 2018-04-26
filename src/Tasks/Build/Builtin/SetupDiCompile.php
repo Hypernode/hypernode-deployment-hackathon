@@ -39,6 +39,10 @@ class SetupDiCompile extends AbstractTask
                 $this->environment->getProjectRoot() . $this->environment->getGeneratedCodeDir(),
                 $this->environment->getProjectRoot() . $this->environment->getGeneratedCodeDirInit()
             );
+            AssetMover::moveAssetDirectory(
+                $this->environment->getProjectRoot() . $this->environment->getGeneratedMetadataDir(),
+                $this->environment->getProjectRoot() . $this->environment->getGeneratedMetadataDirInit()
+            );
             $this->environment->log('Done moving compiled assets');
         } catch (Error $e) {
             $this->environment->getLogger()->error($e->getMessage());

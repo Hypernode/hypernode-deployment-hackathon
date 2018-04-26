@@ -144,7 +144,7 @@ class Environment
     public function getGeneratedMetadataDir(): string
     {
         $directories = DirectoryList::getDefaultConfig();
-        return $directories[DirectoryList::GENERATION]['path'];
+        return $directories[DirectoryList::DI]['path'];
     }
 
     /**

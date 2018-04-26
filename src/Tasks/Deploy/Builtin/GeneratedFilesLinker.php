@@ -38,8 +38,16 @@ class GeneratedFilesLinker extends Deployment\Tasks\Task\AbstractTask
     {
         if (file_exists($this->environment->getProjectRoot() . $target)) {
             try {
+                if (file_exists($link)) {
+                    //Moving files in stead of deleting because this is faster.
+                    // Will do a cleanup when maintenance mode is disabled
+                    rename($this->environment->getProjectRoot() . $link,
+                    $this->environment->getProjectRoot() . $link . time() . '.old');
+                }
+
                 symlink($this->environment->getProjectRoot() . $target,
                     $this->environment->getProjectRoot() . $link);
+
                 $this->environment->log(sprintf('Syminked %s to %s', $target, $link));
             } catch (\Exception $e) {
                 $this->environment->getLogger()->error(sprintf('Error symlinking %s', $target));
