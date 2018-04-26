@@ -36,17 +36,18 @@ class GeneratedFilesLinker extends Deployment\Tasks\Task\AbstractTask
      */
     protected function symlink($target, $link)
     {
+        $target = rtrim($target, '/');
+        $link = rtrim($link, '/');
+
         if (file_exists($this->environment->getProjectRoot() . $target)) {
             try {
-                if (file_exists($link)) {
-                    //Moving files in stead of deleting because this is faster.
-                    // Will do a cleanup when maintenance mode is disabled
-                    rename($this->environment->getProjectRoot() . $link,
-                    $this->environment->getProjectRoot() . $link . time() . '.old');
-                }
-
-                symlink($this->environment->getProjectRoot() . $target,
-                    $this->environment->getProjectRoot() . $link);
+                var_dump(sprintf('ln -sfn %s %s',
+                    $this->environment->getProjectRoot() . $target,
+                    $this->environment->getProjectRoot() . $link));
+                exec(sprintf('rm -rf %s && ln -sfn %s %s',
+                    $this->environment->getProjectRoot() . $link,
+                    $this->environment->getProjectRoot() . $target,
+                    $this->environment->getProjectRoot() . $link));
 
                 $this->environment->log(sprintf('Syminked %s to %s', $target, $link));
             } catch (\Exception $e) {
