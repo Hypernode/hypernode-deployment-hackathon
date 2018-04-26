@@ -9,8 +9,8 @@ require_once 'recipe/common.php';
 set(
     'shared_files',
     [
-    'app/etc/env.php',
-    'var/.maintenance.ip',
+        'app/etc/env.php',
+        'var/.maintenance.ip',
     ]
 );
 
@@ -18,9 +18,9 @@ set(
 set(
     'shared_dirs',
     [
-    'var/log',
-    'var/backups',
-    'pub/media',
+        'var/log',
+        'var/backups',
+        'pub/media',
     ]
 );
 
@@ -28,9 +28,9 @@ set(
 set(
     'writable_dirs',
     [
-    'var',
-    'pub/static',
-    'pub/media',
+        'var',
+        'pub/static',
+        'pub/media',
     ]
 );
 
@@ -38,7 +38,7 @@ set(
 set(
     'clear_paths',
     [
-    'var/cache/*',
+        'var/cache/*',
     ]
 );
 
@@ -63,7 +63,7 @@ inventory('.hypernode.hosts.yml');
 task(
     'tests:run',
     function () {
-    //Todo: implement your test routine here
+        //Todo: implement your test routine here
     }
 )->local();
 
@@ -83,7 +83,8 @@ task(
 task(
     'build:magento',
     function () {
-        run("{{bin/php}} {{release_path}}/bin/magento hypernode:build > {{release_path}}/var/build-output.txt");
+        //TODO: log the output
+        run("{{bin/php}} {{release_path}}/bin/magento hypernode:build");
     }
 );
 
@@ -91,7 +92,8 @@ task(
 task(
     'deploy:magento',
     function () {
-        run("{{bin/php}} {{release_path}}/bin/magento hypernode:deploy > {{release_path}}/var/deploy-output.txt");
+        //TODO: log the output
+        run("{{bin/php}} {{release_path}}/bin/magento hypernode:deploy");
     }
 );
 
@@ -99,7 +101,7 @@ task(
 task(
     'upload',
     function () {
-        upload(__DIR__.'/', '{{release_path}}');
+        upload(__DIR__ . '/', '{{release_path}}');
     }
 );
 
@@ -108,7 +110,7 @@ task(
     'symlink:hypernode',
     function () {
         $stage = get('stage');
-        $public_folder = get('public_folder_'.$stage);
+        $public_folder = get('public_folder_' . $stage);
         if (!$public_folder) {
             throw new Exception(sprintf("Public folder not found for stage: %s", $stage));
         }
@@ -125,16 +127,16 @@ after('deploy:symlink', 'symlink:hypernode');
 task(
     'deploy',
     [
-    'deploy:info',
-    'deploy:prepare',
-    'deploy:release',
-    'build',
-    'upload',
-    'deploy:shared',
-    'deploy:writable',
-    'deploy:symlink',
-    'deploy:magento',
-    'cleanup',
-    'success'
+        'deploy:info',
+        'deploy:prepare',
+        'deploy:release',
+        'build',
+        'upload',
+        'deploy:shared',
+        'deploy:writable',
+        'deploy:symlink',
+        'deploy:magento',
+        'cleanup',
+        'success',
     ]
 );
