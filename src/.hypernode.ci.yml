@@ -7,6 +7,7 @@ deploy:
 static-content:
     strategy: build         #Use either build or deploy; If not set falls back to build.
     sign-files: true        #Sign static files setting
+    jobs: 1                 #Nr of jobs for static content deploy
     js:
         merge: true
         bundling: true
