@@ -29,7 +29,7 @@ class GeneratedFilesLinker extends Deployment\Tasks\Task\AbstractTask
     }
 
     /**
-     * Try to symlink directories
+     * Remove and symlink directory
      *
      * @param string $target
      * @param string $link
@@ -41,9 +41,7 @@ class GeneratedFilesLinker extends Deployment\Tasks\Task\AbstractTask
 
         if (file_exists($this->environment->getProjectRoot() . $target)) {
             try {
-                var_dump(sprintf('ln -sfn %s %s',
-                    $this->environment->getProjectRoot() . $target,
-                    $this->environment->getProjectRoot() . $link));
+
                 exec(sprintf('rm -rf %s && ln -sfn %s %s',
                     $this->environment->getProjectRoot() . $link,
                     $this->environment->getProjectRoot() . $target,
